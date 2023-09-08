@@ -1,11 +1,12 @@
 import type { Operation } from "effection";
-import { useURL } from "freejack/view.ts";
+import { useImports } from "../hooks/use-imports.ts";
 
 export function* AppHtml(): Operation<JSX.Element> {
   let title = "Micro Frontend Composer";
   let description = "Prototyping using Import Maps to create A Micro Frontend Architecture";
 
-  let url = yield* useURL();
+  let imports = yield* useImports();
+
   return (
     <html lang="en-US" dir="ltr">
       <head>
@@ -17,11 +18,14 @@ export function* AppHtml(): Operation<JSX.Element> {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="stylesheet" href="https://use.typekit.net/ugs0ewy.css" />
+        <script type="importmap">
+          {JSON.stringify(imports)}
+        </script>
       </head>
       <body>
         <main class="prose m-auto">
-          <h1>params: {JSON.stringify([...url.searchParams.entries()])}</h1>
         </main>
+        <script type="module" src="/assets/main.js"></script>
       </body>
     </html>
   );
